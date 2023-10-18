@@ -41,13 +41,30 @@ async function run() {
       const result = await brandsCollection.find().toArray();
       res.send(result);
     });
+    // app.get("/brands/:brand", async (req, res) => {
+    //   const result = await brandsCollection.find().toArray();
+    //   res.send(result);
+    // });
 
     // product post
     app.post("/products", async (req, res) => {
       const product = req.body;
       console.log(product);
-      // const result = await productsCollection.insertOne(product);
-      // res.send(result);
+      const result = await productsCollection.insertOne(product);
+      res.send(result);
+    });
+    // all product get
+    app.get("/products", async (req, res) => {
+      const result = await productsCollection.find().toArray();
+      res.send(result);
+    });
+    // get single brand product
+    app.get("/products/:brand", async (req, res) => {
+      const brand = req.params.brand;
+      const query = { brand: brand };
+      const cursor = productsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
     });
     // Send a ping to confirm a successful connection
 
