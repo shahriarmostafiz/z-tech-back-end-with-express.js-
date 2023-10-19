@@ -100,6 +100,31 @@ async function run() {
       const result = await productsCollection.findOne(query);
       res.send(result);
     });
+    // update product
+    app.put("/products/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const data = req.body;
+      console.log(data);
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedProduct = {
+        $set: {
+          name: data.name,
+          brand: data.brand,
+          price: data.price,
+          rating: data.rating,
+          img: data.img,
+          type: data.type,
+          details: data.details,
+        },
+      };
+      const result = await productsCollection.updateOne(
+        filter,
+        updatedProduct,
+        options
+      );
+      res.send(result);
+    });
     // Send a ping to confirm a successful connection
 
     //users management
@@ -121,6 +146,7 @@ async function run() {
       const result = await CartsCollection.find(query).toArray();
       res.send(result);
     });
+
     app.delete("/carts/:id", async (req, res) => {
       const id = req.params.id;
       console.log(id);
