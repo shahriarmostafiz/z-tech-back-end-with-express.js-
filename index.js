@@ -5,6 +5,13 @@ require("dotenv").config();
 
 const app = express();
 app.use(cors());
+// const corsConfig = {
+//   origin: "",
+//   credentials: true,
+//   methods: ["GET", "POST", "PUT", "DELETE"],
+// };
+// app.use(cors(corsConfig));
+// app.options("", cors(corsConfig));
 app.use(express.json());
 const port = process.env.PORT || 5000;
 
@@ -100,6 +107,13 @@ async function run() {
       const result = await productsCollection.findOne(query);
       res.send(result);
     });
+    app.get("/products/categories/:type", async (req, res) => {
+      const type = req.params.type;
+      const query = { type: type };
+      const cursor = productsCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     // update product
     app.put("/products/update/:id", async (req, res) => {
       const id = req.params.id;
@@ -134,6 +148,7 @@ async function run() {
       const result = await usersCollection.insertOne(user);
       res.send(result);
     });
+
     app.post("/carts", async (req, res) => {
       const cart = req.body;
       // console.log(cart);
