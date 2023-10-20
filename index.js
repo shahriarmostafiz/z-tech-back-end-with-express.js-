@@ -13,6 +13,7 @@ app.use(cors());
 // app.use(cors(corsConfig));
 // app.options("", cors(corsConfig));
 app.use(express.json());
+
 const port = process.env.PORT || 5000;
 
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
@@ -74,7 +75,6 @@ async function run() {
     app.get("/brands/:brand", async (req, res) => {
       const brand = req.params.brand;
       const query = { brand: brand };
-
       const result = await brandsCollection.findOne(query);
       res.send(result);
     });
